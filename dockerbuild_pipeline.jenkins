@@ -1,0 +1,31 @@
+#!groovy
+// Check node1-ub properties
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+        label 'master'
+        }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5')) 
+        timestamps()
+        }
+    stages {
+        stage("Build image from Dockerfile") {
+            steps {
+                 echo "Building an App image"
+                 dir ('docker/') {
+                 sh 'docker build -t app:v1 .'
+                                 }
+                }
+            }
+        stage("Check processes")   {
+            steps {
+                 echo "Checking built image" {
+                 sh 'docker images'
+                    }
+                }
+            }
+        }
+}
+
