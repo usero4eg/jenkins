@@ -1,0 +1,26 @@
+#!groovy
+// Check node1-ub properties
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+        label 'master'
+        }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5')) 
+        timestamps()
+        }
+    stages {
+        stage("Check host uptime") {
+            steps {
+                 sh 'ssh root@node1-ub \'uptime\''
+                }
+            }
+        stage("Check processes")   {
+            steps {
+                 sh 'ssh root@node1-ub \'ps -aux\''
+                }
+            }
+        }
+}
+
