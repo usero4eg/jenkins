@@ -21,9 +21,10 @@ pipeline {
             }
         stage("Check processes")   {
             steps {
-                 echo "Checking built image" {
+                 echo "Checking built image in registry"
+                 dir ('docker/') {
                  sh 'docker images'
-                    }
+                                 }
                 }
             }
         }
